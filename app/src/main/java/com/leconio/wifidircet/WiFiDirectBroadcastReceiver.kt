@@ -50,31 +50,16 @@ class WiFiDirectBroadcastReceiver(
             }
         } else if (WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION == action) {
             mManager?.requestPeers(mChannel) { peers ->
-                for (device in peers.deviceList) {
-//                    connectToDevice()
-                }
+                mActivity.setList(peers)
             }
         } else if (WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION == action) {
             val networkInfo = intent.getParcelableExtra<NetworkInfo>(WifiP2pManager.EXTRA_NETWORK_INFO);
             if (networkInfo.isConnected) {
-
+                Toast.makeText(mActivity,"连接成功",Toast.LENGTH_SHORT).show()
             }
         } else if (WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION == action) {
 
         }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun connectToDevice(device: WifiP2pDevice) {
-        val config = WifiP2pConfig()
-        config.deviceAddress = device.deviceAddress
-        mManager?.connect(mChannel, config, object : WifiP2pManager.ActionListener {
-            override fun onSuccess() {
-                Toast.makeText(mActivity, "连接成功", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onFailure(reason: Int) {}
-        })
     }
 
 }
